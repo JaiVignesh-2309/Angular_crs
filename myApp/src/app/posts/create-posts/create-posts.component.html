@@ -11,3 +11,19 @@
 <hr>
 <button (click)="onSavePost()">Save Post</button>
 <p>{{ defaultPost }}</p> -->
+
+<mat-card>
+  <mat-card-title>What's in your mind ?</mat-card-title>
+
+  <mat-form-field>
+  <input matInput placeholder="Title" [(ngModel)]= "commentTite">
+  </mat-form-field>
+
+  <mat-form-field>
+    <textarea matInput  rows="6" [(ngModel)] = "commentContent" placeholder="Leave a comment"></textarea>
+  </mat-form-field>
+  <button mat-raised-button color="accent" (click)="onSavePost()">Save Post</button>
+</mat-card>
+
+
+
