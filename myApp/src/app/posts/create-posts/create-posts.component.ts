@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 
 import { Posts } from '../Posts.model';
 import { NgForm } from '@angular/forms';
+import { PostsService } from '../Posts.service';
 
 @Component({
   selector: 'app-create-posts',
@@ -15,7 +16,10 @@ export class CreatePostsComponent {
   defaultPost = 'No Content';
 
   // Create an emitter using property name "postCreated"
-  @Output() postCreated = new EventEmitter<Posts>();
+  // @Output() postCreated = new EventEmitter<Posts>();
+
+
+  constructor(public postsService: PostsService) {}
 
   // For Inputing the value
 
@@ -42,16 +46,31 @@ export class CreatePostsComponent {
 
   // Using Forms and indicaor references
 
-  onSavePost(post: NgForm) {
+  // onSavePost(post: NgForm) {
+
+  //   if (post.invalid) {
+  //     return;
+  //   }
+
+  //   const posts: Posts = { title: post.value.title, content: post.value.content };
+
+  //   // Emit the desired value so that the value can be listened
+  //   this.postCreated.emit(posts);
+  // }
+
+
+  // Using service
+
+   onSavePost(post: NgForm) {
 
     if (post.invalid) {
       return;
     }
 
-    const posts: Posts = { title: post.value.title, content: post.value.content };
+    // const posts: Posts = { title: post.value.title, content: post.value.content };
 
-    // Emit the desired value so that the value can be listened
-    this.postCreated.emit(posts);
+    this.postsService.addPosts(post.value.title, post.value.content);
+
   }
 
 }

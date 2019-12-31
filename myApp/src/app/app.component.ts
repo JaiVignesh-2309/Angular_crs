@@ -7,11 +7,11 @@ import { Posts } from './posts/Posts.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'myApp';
+  // title = 'myApp';
 
-  postListArray: Posts[] = [];
+  // postListArray: Posts[] = [];
 
-  onAddPost(post) {
-    this.postListArray.push(post);
-  }
+  // onAddPost(post) {
+  //   this.postListArray.push(post);
+  // }
 }
