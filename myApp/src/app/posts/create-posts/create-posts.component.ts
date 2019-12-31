@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
 import { Posts } from '../Posts.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-create-posts',
@@ -30,8 +31,24 @@ export class CreatePostsComponent {
   //   this.defaultPost = this.EnteredValue;
   // }
 
-  onSavePost() {
-    const posts: Posts = { title: this.commentTite, content: this.commentContent };
+  // Using 2 way binding using ngModel instead of forms
+
+  // onSavePost() {
+  //   const posts: Posts = { title: this.commentTite, content: this.commentContent };
+
+  //   // Emit the desired value so that the value can be listened
+  //   this.postCreated.emit(posts);
+  // }
+
+  // Using Forms and indicaor references
+
+  onSavePost(post: NgForm) {
+
+    if (post.invalid) {
+      return;
+    }
+
+    const posts: Posts = { title: post.value.title, content: post.value.content };
 
     // Emit the desired value so that the value can be listened
     this.postCreated.emit(posts);

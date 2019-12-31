@@ -1,18 +1,28 @@
-<!-- Input a value using # -->
+<!-- Input a value using # (REFERENCE) just # refers the element-->
 
-<!-- <textarea rows="6" [value]='defaultPost' #EnteredPost></textarea>
-<hr>
-<button (click)="onSavePost(EnteredPost)">Save Post</button>
-<p>{{ defaultPost }}</p> -->
+  <!-- <textarea rows="6" [value]='defaultPost' #EnteredPost></textarea>
+  <hr>
+  <button (click)="onSavePost(EnteredPost)">Save Post</button>
+  <p>{{ defaultPost }}</p> -->
+
+<!-- Input a value using # (REFERENCE) just # refers the element-->
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 <!-- uSING NG-mODEL -->
 
-<!-- <textarea rows="6" [(ngModel)] = "EnteredValue"></textarea>
-<hr>
-<button (click)="onSavePost()">Save Post</button>
-<p>{{ defaultPost }}</p> -->
+  <!-- <textarea rows="6" [(ngModel)] = "EnteredValue"></textarea>
+  <hr>
+  <button (click)="onSavePost()">Save Post</button>
+  <p>{{ defaultPost }}</p> -->
 
-<mat-card>
+<!-- uSING NG-mODEL -->
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- Functionality using 2 way binding without forms - START-->
+
+<!-- <mat-card>
   <mat-card-title>What's in your mind ?</mat-card-title>
 
   <mat-form-field>
@@ -23,7 +33,48 @@
     <textarea matInput  rows="6" [(ngModel)] = "commentContent" placeholder="Leave a comment"></textarea>
   </mat-form-field>
   <button mat-raised-button color="accent" (click)="onSavePost()">Save Post</button>
+</mat-card> -->
+
+<!-- Functionality using 2 way binding without forms - END-->
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- START uSING FORM MODEL INSTEAD OF 2 WAY BINDING - TEMPLATE DRIVEN FORM-->
+
+<mat-card>
+  <form (submit)="onSavePost(postForm)" #postForm = "ngForm">
+  <mat-card-title>What's in your mind ?</mat-card-title>
+
+  <mat-form-field>
+  <input matInput placeholder="Title" name="title"
+  ngModel
+  required
+  #title= "ngModel">
+
+  <!-- This error can be done in 2 ways -->
+    <!-- 1 - Using Form Controller -->
+      <!-- <mat-error *ngIf="postForm.getControl('title')">Enter the title</mat-error> -->
+    <!-- 2 - Using References  -  where #title="ngModel" is the reference just like ngForm -->
+      <!-- <mat-error *ngIf="title.invalid">Enter the title</mat-error> -->
+
+    <mat-error *ngIf="title.invalid">Enter the title</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <textarea matInput  rows="4" name="content"
+     ngModel
+     placeholder="Leave a comment"
+     required
+     #content= "ngModel"></textarea>
+     <mat-error *ngIf="content.invalid">Enter the post</mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="accent" type="submit">Save Post</button>
+</form>
 </mat-card>
+
+<!-- END uSING FORM MODEL INSTEAD OF 2 WAY BINDING - TEMPLATE DRIVEN FORM-->
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
 
