@@ -71,6 +71,8 @@ export class CreatePostsComponent {
 
     this.postsService.addPosts(post.value.title, post.value.content);
 
+    post.resetForm();
+
   }
 
 }
