@@ -43,6 +43,12 @@ ngOnDestroy() {
 
 onEdit() {}
 
-onDelete() {}
+onDelete(delId: string) {
+this.postService.deletePost(delId);
+// .subscribe((res) => {
+//   console.log(res);
+// });
+
+}
 
 }

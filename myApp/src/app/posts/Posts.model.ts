@@ -1,5 +1,5 @@
 export interface Posts {
-  pid: string;
+  id: string;
   title: string;
   content: string;
 }
