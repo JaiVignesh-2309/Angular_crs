@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Post = require('./model/post')
 
-mongoose.connect("mongodb://jaivm:XVQciUXUUFbHY4Qa@cluster0-shard-00-00-ge9ud.mongodb.net:27017,cluster0-shard-00-01-ge9ud.mongodb.net:27017,cluster0-shard-00-02-ge9ud.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect("mongodb+srv://jaivm:3QcXC2JngtjpktAF@cluster0-ge9ud.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
   console.log("connecting db success");
 })
@@ -12,8 +12,6 @@ mongoose.connect("mongodb://jaivm:XVQciUXUUFbHY4Qa@cluster0-shard-00-00-ge9ud.mo
 });
 
 const app = express();
-// { useNewUrlParser: true, useUnifiedTopology: true }
-
 
 // TO RESTRICT 2 TIME CALL (due to favicon)
 // function ignoreFavicon(req, res, next) {
@@ -115,4 +113,4 @@ Post.deleteOne({ _id: req.params.id }).then((result) => {
 
 
 module.exports = app;
-// XVQciUXUUFbHY4Qa
+// 3QcXC2JngtjpktAF
