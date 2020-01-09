@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Post = require('./model/post')
 
-mongoose.connect("mongodb+srv://jaivm:3QcXC2JngtjpktAF@cluster0-ge9ud.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect("mongodb://jaivm:9VtXIxXOfzFvp8F9@cluster0-shard-00-00-ge9ud.mongodb.net:27017,cluster0-shard-00-01-ge9ud.mongodb.net:27017,cluster0-shard-00-02-ge9ud.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
   console.log("connecting db success");
 })
@@ -35,7 +35,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   // OPTIONS IS DEFAULT BY CHROME AND ANGULAR
-  res.setHeader("Access-Control-Allow-Methods","GET, POST, DELETE, PATCH, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods","GET, POST, DELETE, PATCH, PUT, OPTIONS");
 
   next();
 });
@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 
 // POST REQUEST
 
-app.post('/api/addPosts', (req, res, next) => {
+app.post('/api/posts/addPosts', (req, res, next) => {
 
   console.log("In server - addPosts");
 
@@ -62,9 +62,30 @@ app.post('/api/addPosts', (req, res, next) => {
 
 });
 
-// GET REQUEST
+// GET 1 REQUEST
 
-app.get('/api/getPosts',(req, res, next) => {
+app.get('/api/posts/getPostById/:pid',(req, res, next) => {
+
+
+Post.findById(req.params.pid)
+.then((post) => {
+console.log(" single get post");
+  if (post) {
+    res.status(200).json({ message : 'Post fetched successfully', post: post});
+  }else {
+    res.status(200).json({ message : 'No post found', post: null});
+  }
+
+})
+.catch(() => {
+  console.log("Error in getting posts");
+});
+
+});
+
+// GET ALL REQUEST
+
+app.get('/api/posts/getPosts',(req, res, next) => {
 
   console.log("In server - getPosts");
 
@@ -92,7 +113,7 @@ Post.find()
 
 // DELETE REQUEST
 
-app.delete("/api/deletePost/:id", (req, res, next) => {
+app.delete("/api/posts/deletePost/:id", (req, res, next) => {
 
   console.log(req.params.id);
 
@@ -111,6 +132,24 @@ Post.deleteOne({ _id: req.params.id }).then((result) => {
 
 });
 
+// UPDATE REQUEST
+
+app.put("/api/posts/updatePosts/:postId", (req, res, next) => {
+
+  const post = new Post ({
+    _id: req.body.id,
+    title: req.body.title,
+    content: req.body.content
+  })
+
+  Post.updateOne( {_id: req.body.id}, post )
+  .then((result) => {
+    console.log(result);
+    res.status(200).json({ message : 'Post updated successfully'});
+  })
+
+});
+
 
 module.exports = app;
-// 3QcXC2JngtjpktAF
+// 9VtXIxXOfzFvp8F9

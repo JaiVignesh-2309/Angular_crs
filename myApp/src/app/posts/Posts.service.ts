@@ -1,6 +1,6 @@
 import { Posts } from './Posts.model';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
@@ -15,7 +15,7 @@ export class PostsService {
   getPosts() {
     // return [...this.post];
 
-    this.http.get<{message: string, posts: any}>('http://localhost:3000/api/getPosts')
+    this.http.get<{message: string, posts: any}>('http://localhost:3000/api/posts/getPosts')
     .pipe(map((postData) => {
       return postData.posts.map((post) => {
         return {
@@ -38,11 +38,21 @@ export class PostsService {
     return this.postUpdatedList.asObservable();
   }
 
+  getPostById(postId: string) {
+    //  Directly using a copy not from server but on refresh the data gets erased
+    // return {...this.post.find(p => p.id === postId)};
+
+    // Fetch from server
+    return this.http.get<{message: string, post: {_id: string, title: string, content: string}}>
+    ('http://localhost:3000/api/posts/getPostById/' + postId);
+
+  }
+
   addPosts(Ltitle: string, Lcontent: string) {
 
     const postData: Posts = {id: null, title: Ltitle, content: Lcontent};
 
-    this.http.post<{message: string, id: string}>('http://localhost:3000/api/addPosts', postData)
+    this.http.post<{message: string, id: string}>('http://localhost:3000/api/posts/addPosts', postData)
     .subscribe((data) => {
 
       console.log(data);
@@ -54,8 +64,42 @@ export class PostsService {
 
   }
 
+  updatePosts(Pid: string, Ptitle: string, Pcontent: string) {
+    const updatePost = {
+      id: Pid,
+      title: Ptitle,
+      content: Pcontent
+    };
+    this.http.put('http://localhost:3000/api/posts/updatePosts/' + Pid, updatePost)
+    .subscribe((data) => {
+      // console.log(this.post);
+
+      // Update method 1
+      // const oldPost = [...this.post];
+
+      // this.post = oldPost.map( p => {
+      //   if (p.id === Pid) {
+      //     return { id: Pid, title: Ptitle, content: Pcontent };
+      //   } else {
+      //     return p;
+      //   }
+      // });
+      // this.postUpdatedList.next([...this.post]);
+
+
+      // Update Method 2
+
+      const oldPosts = [...this.post];
+      const oldPostIndex = oldPosts.findIndex( p => p.id === Pid );
+      oldPosts[oldPostIndex] = updatePost;
+      this.post = oldPosts;
+      this.postUpdatedList.next([...this.post]);
+
+    });
+  }
+
   deletePost(id: string) {
-    this.http.delete<{message: string}>('http://localhost:3000/api/deletePost/' + id)
+    this.http.delete<{message: string}>('http://localhost:3000/api/posts/deletePost/' + id)
     .subscribe((delData) => {
       // console.log(delData);
       console.log('Delete Success');

@@ -47,7 +47,7 @@
 
   <mat-form-field>
   <input matInput placeholder="Title" name="title"
-  ngModel
+  [ngModel] = "post?.title"
   required
   #title= "ngModel">
 
@@ -62,7 +62,7 @@
 
   <mat-form-field>
     <textarea matInput  rows="4" name="content"
-     ngModel
+     [ngModel]= "post?.content"
      placeholder="Leave a comment"
      required
      #content= "ngModel"></textarea>

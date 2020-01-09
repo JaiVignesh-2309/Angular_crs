@@ -11,6 +11,7 @@ import { CreatePostsComponent } from './posts/create-posts/create-posts.componen
 import { ListPostComponent } from './posts/list-posts/list-posts.component';
 
 import { PostsService } from './posts/Posts.service';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { PostsService } from './posts/Posts.service';
   imports: [
     BrowserModule,
     HttpClientModule,
+    AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
     MatInputModule,
